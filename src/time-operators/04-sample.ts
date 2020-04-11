@@ -1,16 +1,16 @@
-import { fromEvent } from 'rxjs';
-import { auditTime, tap, map } from 'rxjs/operators';
+import { fromEvent, interval } from 'rxjs';
+import { sample } from 'rxjs/operators';
 
 const observer = {
     next: val => console.log('next:', val),
     complete: () => console.log('Completed!')    
 }
 
+const interval$ = interval(500);
 const click$ = fromEvent<MouseEvent>(document, 'click');
 
-click$.pipe(
-    map(({ x , y}) => ({ x, y})),
-    tap(val => console.log('tap', val)),
-    auditTime(2000)
+interval$.pipe(
+    sample(click$)
 )
 .subscribe(console.log);
+
