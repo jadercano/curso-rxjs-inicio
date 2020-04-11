@@ -1,10 +1,17 @@
-import { from } from 'rxjs';
-import { distinctUntilKeyChanged } from 'rxjs/operators';
+import { of, from } from 'rxjs';
+import { distinct, distinctUntilChanged } from 'rxjs/operators';
 
 const observer = {
     next: val => console.log('next:', val),
     complete: () => console.log('Completed!')    
 }
+
+const numbers$ = of<number|string>(1,'1',1,3,3,2,2,4,4,5,3,1);
+
+numbers$.pipe(
+    distinctUntilChanged() // ===
+)
+.subscribe(observer);
 
 interface Character {
     name: string
@@ -26,6 +33,6 @@ const characters : Character[] = [
 ];
 
 from(characters).pipe(
-    distinctUntilKeyChanged('name')
+    distinctUntilChanged((x, y) => x.name === y.name)
 )
 .subscribe(observer);
