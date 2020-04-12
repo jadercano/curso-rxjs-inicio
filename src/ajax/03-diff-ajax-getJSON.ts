@@ -8,30 +8,24 @@ const observer = {
     complete: () => console.log('Completed!')    
 }
 
-const url = 'https://httpbin.org/delay/1';
+const url = 'https://httpbinXX.org/delay/1';
 
 const handleAjaxError = (err: AjaxError) => {
     console.warn('error:', err.message);
     return of([]);
 }
 
-// ajax.put(url, {
-//     id: 1,
-//     name: 'Jader'
-// }, {
-//     'my-token': 'ABC123' 
-// })
-// .subscribe(console.log);
+// const obs$ = ajax.getJSON(url).pipe(
+//     catchError(handleAjaxError)
+// );
+// const obs2$ = ajax(url).pipe(
+//     catchError(handleAjaxError)
+// );
 
-ajax({
-    url,
-    method: 'POST',
-    headers: {
-        'my-token': 'ABC123'
-    },
-    body: {
-        id: 1,
-        name: 'Jader'
-    }
-})
-.subscribe(console.log);
+const obs$ = ajax.getJSON(url).pipe(
+    catchError(handleAjaxError)
+);
+const obs2$ = ajax(url);
+
+//obs2$.subscribe(data => console.log('ajax:',data));
+obs$.subscribe(observer);
